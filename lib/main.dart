@@ -35,32 +35,38 @@ class ThemeModeProvider extends ChangeNotifier {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // Define the custom color schemes based on the logo
   static final _defaultLightColorScheme = ColorScheme(
     brightness: Brightness.light,
-    primary: const Color(0xFF3F5F90),
-    onPrimary: const Color(0xFFFFFFFF),
-    primaryContainer: const Color(0xFFD6E3FF),
-    onPrimaryContainer: const Color(0xFF001B3D),
-    secondary: const Color(0xFF555F71),
-    onSecondary: const Color(0xFFFFFFFF),
-    secondaryContainer: const Color(0xFFD9E3F9),
-    onSecondaryContainer: const Color(0xFF121C2B),
-    tertiary: const Color(0xFF6F5675),
-    onTertiary: const Color(0xFFFFFFFF),
-    tertiaryContainer: const Color(0xFFF9D8FE),
-    onTertiaryContainer: const Color(0xFF28132F),
-    error: const Color(0xFFBA1A1A),
-    onError: const Color(0xFFFFFFFF),
-    errorContainer: const Color(0xFFFFDAD6),
-    onErrorContainer: const Color(0xFF410002),
-    background: const Color(0xFFF9F9FF),
-    onBackground: const Color(0xFF191C20),
-    surface: const Color(0xFFF9F9FF),
-    onSurface: const Color(0xFF191C20),
-    surfaceVariant: const Color(0xFFE0E2EC),
-    onSurfaceVariant: const Color(0xFF43474E),
-    outline: const Color(0xFF74777F),
-    surfaceTint: const Color(0xFF3F5F90),
+    primary: const Color(0xFF4DB6AC), // Teal from book
+    onPrimary: Colors.white,
+    primaryContainer: const Color(0xFFB2DFDB),
+    onPrimaryContainer: const Color(0xFF004D40),
+    secondary: const Color(0xFFF06292), // Pink from flower (using as secondary)
+    onSecondary: Colors.white,
+    secondaryContainer: const Color(0xFFF8BBD0),
+    onSecondaryContainer: const Color(0xFF880E4F),
+    tertiary: const Color(0xFF80CBC4), // Lighter teal as tertiary
+    onTertiary: Colors.black,
+    tertiaryContainer: const Color(0xFFE0F2F1),
+    onTertiaryContainer: const Color(0xFF004D40),
+    error: const Color(0xFFF06292), // Pink from flower for errors/behind schedule
+    onError: Colors.white,
+    errorContainer: const Color(0xFFFCE4EC),
+    onErrorContainer: const Color(0xFF880E4F),
+    background: const Color(0xFFFAF3E0), // Off-white from logo background
+    onBackground: const Color(0xFF37474F), // Dark grey for readability
+    surface: const Color(0xFFFAF3E0), // Off-white for card surfaces etc.
+    onSurface: const Color(0xFF37474F), // Dark grey for readability
+    surfaceVariant: const Color(0xFFE0E0E0), // Slightly darker grey variant
+    onSurfaceVariant: const Color(0xFF424242),
+    outline: const Color(0xFFB0BEC5), // Muted outline color
+    surfaceTint: const Color(0xFF4DB6AC), // Teal tint
+    inversePrimary: const Color(0xFF80CBC4),
+    inverseSurface: const Color(0xFF37474F),
+    onInverseSurface: const Color(0xFFFAF3E0),
+    shadow: Colors.black, // Default shadow
+    scrim: Colors.black.withOpacity(0.3), // Default scrim
   );
 
   static final _defaultDarkColorScheme = ColorScheme(
@@ -96,7 +102,7 @@ class MyApp extends StatelessWidget {
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         return MaterialApp(
-          title: 'Book Challenge Counter',
+          title: 'Tale Talley',
           theme: ThemeData(
             colorScheme: lightDynamic ?? _defaultLightColorScheme,
             useMaterial3: true,
@@ -249,6 +255,29 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 24.0),
+                  child: Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: 160,
+                          child: Image.asset('assets/logo.png'),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Tale Talley',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Card(
                   color: colorScheme.surface,
                   child: Padding(
