@@ -1,0 +1,46 @@
+steps:
+# Install Flutter and build the web app
+- name: 'ubuntu:22.04'
+  entrypoint: bash
+  env:
+  - 'PATH=/flutter/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  args:
+  - -c
+  - |
+    apt-get update && apt-get install -y curl git unzip xz-utils zip libglu1-mesa
+    git clone https://github.com/flutter/flutter.git /flutter
+    flutter config --enable-web
+    cd /workspace
+    flutter pub get
+    flutter build web --release
+
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'us-central1-docker.pkg.dev/dghammertime/book-challenge-counter/app', '.' ]
+
+# Debug: Check the active service account
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args: [ 'auth', 'list' ]
+
+# Push the container image to Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'push', 'us-central1-docker.pkg.dev/dghammertime/book-challenge-counter/app:latest' ]
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'book-challenge-counter' # Service name
+  - '--image'
+  - 'us-central1-docker.pkg.dev/dghammertime/book-challenge-counter/app:latest' # Image to deploy
+  - '--region'
+  - 'us-central1' # Region
+  - '--platform'
+  - 'managed' # Platform
+  - '--allow-unauthenticated' # Allow public access
+
+images:
+- 'us-central1-docker.pkg.dev/dghammertime/book-challenge-counter/app:latest'
