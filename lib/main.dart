@@ -346,7 +346,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'You are ${progress["difference"]} books ${(progress["difference"] as int) >= 0 ? "ahead of" : "behind"} schedule',
+                          'You are ${progress["difference"]} books ${progress['isOnTrack'] as bool ? "ahead of" : "behind"} schedule',
                           style: TextStyle(
                             fontSize: 14,
                             color: colorScheme.onSurface.withOpacity(0.7),
